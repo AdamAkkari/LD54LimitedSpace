@@ -32,7 +32,7 @@ func handle_movement(delta):
 		var target_pos = grid.get_actual_pos(target_grid_pos.x, target_grid_pos.y)
 		var horizontal_velocity = Vector2(target_pos.x - position.x, target_pos.y - position.z).normalized() * speed
 		velocity = horizontal_velocity.x * global_transform.basis.x + horizontal_velocity.y * global_transform.basis.z
-		if position.distance_to(Vector3(target_pos.x, position.y, target_pos.y)) < 1:
+		if position.distance_to(Vector3(target_pos.x, position.y, target_pos.y)) < 3:
 			is_moving = false
 		var grid_pos = grid.get_grid_pos(position.x, position.z)
 		if (position.y < grid.grid[target_grid_pos.x][target_grid_pos.y] * grid.cell_height):

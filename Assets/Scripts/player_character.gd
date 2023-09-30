@@ -7,22 +7,36 @@ extends CharacterBody3D
 var mouse_sensitivity = ProjectSettings.get_setting("player/mouse_sensitivity")
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vertical_velocity = 0
+var is_dead = false
+var dead_cam_set = false
 
 @onready var camera:Camera3D = $Camera3D
 @onready var shoot_cooldown:Timer = $shoot_cooldown
 @onready var crosshair_enabled_sprite = $HUD/CenterContainer/crosshair_enabled
 @onready var crosshair_disabled_sprite = $HUD/CenterContainer/crosshair_disabled
+@onready var collider:CollisionShape3D = $CollisionShape3D
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
-	handle_movement(delta)
-	handle_mouse_lock()
-	shoot()
+	if !is_dead:
+		handle_movement(delta)
+		handle_mouse_lock()
+		shoot()
+	else:
+		var target_pos = Vector3(grid.grid_size_x * grid.cell_width_x, grid.get_max_height() * grid.cell_height, grid.grid_size_y * grid.cell_width_y)
+		if position.distance_to(target_pos) > 1:
+			print_debug(position.distance_to(target_pos))
+			velocity = (target_pos - position).normalized() * 10
+		else:
+			dead_cam_set = true
+			velocity = Vector3.ZERO
+		move_and_slide()
+		camera.look_at(Vector3(0, target_pos.y / 2, 0))
 
 func _input(event):
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and !is_dead:
 		rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
 		camera.rotate_x(deg_to_rad(-event.relative.y * mouse_sensitivity))
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
@@ -64,7 +78,13 @@ func shoot():
 		crosshair_enabled_sprite.visible = false
 		crosshair_disabled_sprite.visible = true
 
-
 func _on_shoot_cooldown_timeout():
 	crosshair_enabled_sprite.visible = true
 	crosshair_disabled_sprite.visible = false
+
+func killed():
+	is_dead = true
+	crosshair_disabled_sprite.visible = false
+	crosshair_enabled_sprite.visible = false
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	collider.disabled = true

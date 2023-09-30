@@ -35,12 +35,12 @@ func _ready():
 func increment_cell(x, y):
 	if x >= grid_size_x or x < 0:
 		print_debug("invalid x pos: " + str(x).pad_decimals(3))
-		pass
+		return
 	if y >= grid_size_y or y < 0:
 		print_debug("invalid y pos: " + str(y).pad_decimals(3))
-		pass
-	grid[x][y] += 1
+		return
 	spawn_prefab(building_cell, x, y, grid[x][y])
+	grid[x][y] += 1
 
 func get_actual_pos(x, y):
 	var actual_pos = Vector2.ZERO
@@ -61,11 +61,7 @@ func spawn_prefab(prefab, grid_pos_x, grid_pos_y, height, height_offset = 0):
 	add_child(instanced_scene)
 	instanced_scene.position.x = get_actual_pos(grid_pos_x, grid_pos_y).x
 	instanced_scene.position.z = get_actual_pos(grid_pos_x, grid_pos_y).y
-	if height > 0:
-		instanced_scene.position.y = cell_height * (height - 1)
-	else:
-		instanced_scene.position.y = 0
-	instanced_scene.position.y = instanced_scene.position.y + height_offset
+	instanced_scene.position.y = cell_height * height + height_offset
 	return instanced_scene
 
 func add_random_cell():
@@ -91,10 +87,18 @@ func _on_enemy_killed(x, y):
 	add_random_enemy()
 
 func get_player_grid_pos():
-	if player:
+	if player and !player.is_dead:
 		return get_grid_pos(player.position.x, player.position.z)
 	else:
 		return Vector2.ZERO
 
 func is_grid_pos_valid(x, y):
 	return (x >= 0 and x < grid_size_x and y >= 0 and y < grid_size_y)
+
+func get_max_height():
+	var max_height = 0
+	for x in range(grid_size_x):
+		for y in range(grid_size_y):
+			if grid[x][y] > max_height:
+				max_height = grid[x][y]
+	return max_height
