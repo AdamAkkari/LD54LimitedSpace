@@ -1,4 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dn2gj4qstmil3"]
+[gd_scene load_steps=4 format=3 uid="uid://dn2gj4qstmil3"]
+
+[ext_resource type="Texture2D" uid="uid://clm1y2i1hu677" path="res://Assets/Sprites/wood.png" id="1_q1j6f"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vhon8"]
+albedo_texture = ExtResource("1_q1j6f")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rp6v1"]
 size = Vector3(10, 5, 10)
@@ -8,6 +13,7 @@ size = Vector3(10, 5, 10)
 [node name="Block" type="StaticBody3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Block"]
+material_override = SubResource("StandardMaterial3D_vhon8")
 size = Vector3(10, 5, 10)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Block"]

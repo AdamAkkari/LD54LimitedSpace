@@ -3,21 +3,17 @@
 [ext_resource type="Script" path="res://Assets/Scripts/enemy_character.gd" id="1_r25bl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pbt0v"]
+radius = 0.75
+height = 2.25
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fp4o3"]
 
-[node name="enemy_character" type="CharacterBody3D"]
+[node name="enemy_character" type="CharacterBody3D" groups=["enemy"]]
 script = ExtResource("1_r25bl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
 shape = SubResource("CapsuleShape3D_pbt0v")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_fp4o3")
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 4.0
-one_shot = true
-autostart = true
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

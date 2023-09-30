@@ -8,10 +8,17 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vertical_velocity = 0
 
 @onready var camera:Camera3D = $Camera3D
+@onready var shoot_cooldown:Timer = $shoot_cooldown
+@onready var crosshair_enabled_sprite = $HUD/CenterContainer/crosshair_enabled
+@onready var crosshair_disabled_sprite = $HUD/CenterContainer/crosshair_disabled
+
+func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
 	handle_movement(delta)
 	handle_mouse_lock()
+	shoot()
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -42,3 +49,22 @@ func handle_mouse_lock():
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE else Input.MOUSE_MODE_VISIBLE
 
+func shoot():
+	if Input.is_action_just_pressed("shoot") and shoot_cooldown.is_stopped():
+		var space = get_world_3d().direct_space_state
+		var query = PhysicsRayQueryParameters3D.create(camera.global_position,
+				camera.global_position - camera.global_transform.basis.z * 200)
+		var collision = space.intersect_ray(query)
+		if collision:
+			if (collision.collider.is_in_group("enemy")):
+				collision.collider.kill()
+		else:
+			print_debug("null")
+		shoot_cooldown.start()
+		crosshair_enabled_sprite.visible = false
+		crosshair_disabled_sprite.visible = true
+
+
+func _on_shoot_cooldown_timeout():
+	crosshair_enabled_sprite.visible = true
+	crosshair_disabled_sprite.visible = false
