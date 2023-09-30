@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://38l7f3ddtwyx"]
+[gd_scene load_steps=6 format=3 uid="uid://38l7f3ddtwyx"]
 
-[ext_resource type="Texture2D" uid="uid://uv30lvkfv8jn" path="res://Assets/sand.png" id="1_nrdw5"]
-[ext_resource type="PackedScene" uid="uid://ntjxmdicu773" path="res://Scenes/player_character.tscn" id="2_bysrl"]
+[ext_resource type="PackedScene" uid="uid://ntjxmdicu773" path="res://Scenes/Prefabs/player_character.tscn" id="2_bysrl"]
+[ext_resource type="PackedScene" uid="uid://dp6exmu8u7o3o" path="res://Scenes/Prefabs/GridGenerator.tscn" id="2_tldds"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i5m37"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -16,30 +16,16 @@ sky = SubResource("Sky_byeq3")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_svsgu"]
-albedo_texture = ExtResource("1_nrdw5")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6ihe6"]
-size = Vector3(100, 1, 100)
-
 [node name="Node3D" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_6ooag")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.574363, 0)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3D"]
-material_override = SubResource("StandardMaterial3D_svsgu")
-size = Vector3(100, 1, 100)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_6ihe6")
-
-[node name="player_character" parent="." instance=ExtResource("2_bysrl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.32571, 0)
-jump_velocity = 10.0
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.25, -0.866025, 0.433013, 0.433013, 0.5, 0.75, -0.866025, 0, 0.5, 0, 1, -2)
+
+[node name="player_character" parent="." instance=ExtResource("2_bysrl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.12783, 0)
+jump_velocity = 20.0
+
+[node name="GridGenerator" parent="." instance=ExtResource("2_tldds")]

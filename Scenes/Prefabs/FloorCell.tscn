@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://0i188d5qpxt8"]
+
+[ext_resource type="Texture2D" uid="uid://uv30lvkfv8jn" path="res://Assets/sand.png" id="1_uoqnb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_88n5t"]
+albedo_texture = ExtResource("1_uoqnb")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x5n07"]
+size = Vector3(10, 1, 10)
+
+[node name="FloorCell" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+material_override = SubResource("StandardMaterial3D_88n5t")
+size = Vector3(10, 1, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_x5n07")
