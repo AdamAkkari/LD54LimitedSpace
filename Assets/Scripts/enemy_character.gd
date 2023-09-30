@@ -6,6 +6,8 @@ signal killed
 @export var jump_velocity = 10
 @export var grid:GridGenerator
 
+@onready var explosion = load("res://Scenes/Prefabs/explosion.tscn")
+
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vertical_velocity = 0
 
@@ -16,6 +18,9 @@ var moving_steps = []
 var rng = RandomNumberGenerator.new()
 
 func kill():
+	var instanced_scene = explosion.instantiate()
+	get_parent().add_child(instanced_scene)
+	instanced_scene.position = position
 	emit_signal("killed", position.x, position.z)
 	queue_free()
 

@@ -31,6 +31,6 @@ jump_velocity = 11.0
 grid = NodePath("../GridGenerator")
 
 [node name="GridGenerator" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_tldds")]
-grid_size_x = 4
-grid_size_y = 4
+grid_size_x = 7
+grid_size_y = 7
 player = NodePath("../player_character")

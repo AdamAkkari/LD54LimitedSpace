@@ -62,7 +62,9 @@ func spawn_prefab(prefab, grid_pos_x, grid_pos_y, height, height_offset = 0):
 	instanced_scene.position.x = get_actual_pos(grid_pos_x, grid_pos_y).x
 	instanced_scene.position.z = get_actual_pos(grid_pos_x, grid_pos_y).y
 	if height > 0:
-		instanced_scene.position.y = cell_height * (height - 1) + cell_height / 2
+		instanced_scene.position.y = cell_height * (height - 1)
+	else:
+		instanced_scene.position.y = 0
 	instanced_scene.position.y = instanced_scene.position.y + height_offset
 	return instanced_scene
 
@@ -72,7 +74,10 @@ func add_random_cell():
 func add_random_enemy():
 	var x = rng.randi_range(0, grid_size_x - 1)
 	var y = rng.randi_range(0, grid_size_y - 1)
-	var instance = spawn_prefab(enemy_prefab, x, y, grid[x][y], 1.5)
+	var offset = 1.5
+	if grid[x][y] > 0:
+		offset += cell_height
+	var instance = spawn_prefab(enemy_prefab, x, y, grid[x][y], 1.5 + offset)
 	instance.killed.connect(_on_enemy_killed)
 	instance.grid = self
 

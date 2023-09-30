@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dn2gj4qstmil3"]
+[gd_scene load_steps=5 format=3 uid="uid://dn2gj4qstmil3"]
 
+[ext_resource type="Script" path="res://Assets/Scripts/BuildingCell.gd" id="1_i2rfp"]
 [ext_resource type="Texture2D" uid="uid://clm1y2i1hu677" path="res://Assets/Sprites/wood.png" id="1_q1j6f"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vhon8"]
@@ -9,8 +10,10 @@ albedo_texture = ExtResource("1_q1j6f")
 size = Vector3(10, 5, 10)
 
 [node name="BuildingCell" type="Node3D"]
+script = ExtResource("1_i2rfp")
 
 [node name="Block" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Block"]
 material_override = SubResource("StandardMaterial3D_vhon8")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgshg3nuevpfl"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/explosion.gd" id="1_u3du8"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_wh1fh"]
+
+[node name="explosion" type="Node3D"]
+script = ExtResource("1_u3du8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_wh1fh")
