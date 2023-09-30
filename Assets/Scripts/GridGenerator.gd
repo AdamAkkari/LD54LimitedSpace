@@ -1,10 +1,13 @@
 extends Node3D
 
+class_name GridGenerator
+
 @export var grid_size_x = 10
 @export var grid_size_y = 10
 @export var cell_width_x = 10
 @export var cell_width_y = 10
 @export var cell_height = 5
+@export var player:CharacterBody3D
 
 @onready var floor_cell = load("res://Scenes/Prefabs/FloorCell.tscn")
 @onready var building_cell = load("res://Scenes/Prefabs/BuildingCell.tscn")
@@ -49,7 +52,7 @@ func get_grid_pos(x, y):
 	var grid_pos = Vector2.ZERO
 	grid_pos.x = x / cell_width_x + pos_offset_x
 	grid_pos.y = y / cell_width_y + pos_offset_y
-	return grid_pos
+	return grid_pos.round()
 
 func spawn_prefab(prefab, grid_pos_x, grid_pos_y, height, height_offset = 0):
 	if !(prefab is PackedScene):
@@ -71,6 +74,7 @@ func add_random_enemy():
 	var y = rng.randi_range(0, grid_size_y - 1)
 	var instance = spawn_prefab(enemy_prefab, x, y, grid[x][y], 1.5)
 	instance.killed.connect(_on_enemy_killed)
+	instance.grid = self
 
 # TODO: adapt for spawn management
 func _on_timer_timeout():
@@ -80,3 +84,12 @@ func _on_enemy_killed(x, y):
 	var grid_pos = get_grid_pos(x, y)
 	increment_cell(grid_pos.x, grid_pos.y)
 	add_random_enemy()
+
+func get_player_grid_pos():
+	if player:
+		return get_grid_pos(player.position.x, player.position.z)
+	else:
+		return Vector2.ZERO
+
+func is_grid_pos_valid(x, y):
+	return (x >= 0 and x < grid_size_x and y >= 0 and y < grid_size_y)

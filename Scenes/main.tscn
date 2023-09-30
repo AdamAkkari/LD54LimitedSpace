@@ -25,10 +25,12 @@ environment = SubResource("Environment_6ooag")
 transform = Transform3D(0.25, -0.866025, 0.433013, 0.433013, 0.5, 0.75, -0.866025, 0, 0.5, 0, 1, -2)
 shadow_enabled = true
 
-[node name="player_character" parent="." instance=ExtResource("2_bysrl")]
+[node name="player_character" parent="." node_paths=PackedStringArray("grid") instance=ExtResource("2_bysrl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.12783, -1)
 jump_velocity = 11.0
+grid = NodePath("../GridGenerator")
 
-[node name="GridGenerator" parent="." instance=ExtResource("2_tldds")]
+[node name="GridGenerator" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_tldds")]
 grid_size_x = 4
 grid_size_y = 4
+player = NodePath("../player_character")

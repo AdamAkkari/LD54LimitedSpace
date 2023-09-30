@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @export var speed = 10
 @export var jump_velocity = 4.5
+@export var grid:GridGenerator
 
 var mouse_sensitivity = ProjectSettings.get_setting("player/mouse_sensitivity")
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -35,7 +36,6 @@ func handle_movement(delta):
 	if is_on_floor():
 		vertical_velocity = 0
 		if Input.is_action_just_pressed("jump"):
-			print_debug("oui")
 			vertical_velocity = jump_velocity
 	else:
 		vertical_velocity -= gravity * delta
