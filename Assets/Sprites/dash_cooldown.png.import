@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://biopb160m4ssl"
-path="res://.godot/imported/wood - Copie.png-2997fc8277e78172e8ffa7a5168d7da9.ctex"
+uid="uid://o2rj7v5buedw"
+path="res://.godot/imported/dash_cooldown.png-0f60432d5cc32e1cd40f87f69e7c5e17.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/wood - Copie.png"
-dest_files=["res://.godot/imported/wood - Copie.png-2997fc8277e78172e8ffa7a5168d7da9.ctex"]
+source_file="res://Assets/Sprites/dash_cooldown.png"
+dest_files=["res://.godot/imported/dash_cooldown.png-0f60432d5cc32e1cd40f87f69e7c5e17.ctex"]
 
 [params]
 
