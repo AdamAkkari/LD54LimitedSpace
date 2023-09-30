@@ -71,10 +71,11 @@ func get_next_target_pos():
 	and grid.grid[grid_pos.x][grid_pos.y] == grid.grid[grid_pos.x][grid_pos.y + 1] - 1):
 		target_grid_pos = Vector2(grid_pos.x, grid_pos.y + 1)
 		return
+	#Check for player pos
 	var player_grid_pos = grid.get_player_grid_pos()
 	var grid_movement = Vector2(grid_pos.x - player_grid_pos.x, grid_pos.y - player_grid_pos.y).normalized().round()
-	print_debug(grid_pos - grid_movement)
 	target_grid_pos = grid_pos - grid_movement
+	#Randomize if nothing work
 	if (grid.grid[target_grid_pos.x][target_grid_pos.y] > grid.grid[grid_pos.x][grid_pos.y] + 1):
 		var random_nb = rng.randi_range(0, 3)
 		if (random_nb == 0):
