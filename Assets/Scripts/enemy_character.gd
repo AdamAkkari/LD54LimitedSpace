@@ -39,10 +39,6 @@ func kill():
 	queue_free()
 
 func _physics_process(delta):
-#	@onready var getInSightTimer = $GetInSightTimer
-#@onready var aboutToShootTimer = $AboutToShootTimer
-#@onready var shootTimer = $ShootTimer
-#@onready var actualShootTimer = $ActualShootTimer
 	getInSightTimer.paused = grid.is_paused
 	aboutToShootTimer.paused = grid.is_paused
 	shootTimer.paused = grid.is_paused
@@ -66,11 +62,17 @@ func handle_movement(delta):
 		velocity = Vector3.ZERO
 		get_next_target_pos()
 		is_moving = true
+	var current_grid_pos = grid.get_grid_pos(position.x, position.z)
+	if global_position.y < grid.grid[current_grid_pos.x][current_grid_pos.y] * grid.cell_height + 1:
+		global_position.y = grid.grid[current_grid_pos.x][current_grid_pos.y] * grid.cell_height + 1
 
 	velocity.y = vertical_velocity
 	
 	# Apply movement
 	move_and_slide()
+	
+	if abs(velocity.y) > 50:
+		velocity.y = 0
 	
 	# Jump & gravity
 	if is_on_floor():

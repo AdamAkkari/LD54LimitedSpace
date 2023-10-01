@@ -92,6 +92,10 @@ func handle_movement(delta):
 		vertical_velocity -= gravity * delta
 	velocity.y = vertical_velocity
 	
+	var current_grid_pos = grid.get_grid_pos(position.x, position.z)
+	if global_position.y < grid.grid[current_grid_pos.x][current_grid_pos.y] * grid.cell_height + 1:
+		global_position.y = grid.grid[current_grid_pos.x][current_grid_pos.y] * grid.cell_height + 1
+	
 	# Apply movement
 	move_and_slide()
 

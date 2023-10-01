@@ -47,7 +47,6 @@ func _process(delta):
 		difficulty += 0.2
 		for i in floor(difficulty) + 1:
 			add_random_enemy()
-		print_debug("current difficulty: " + str(difficulty))
 	if Input.is_action_just_pressed("ui_cancel"):
 		is_paused = !is_paused
 	pauseCanvas.visible = is_paused
