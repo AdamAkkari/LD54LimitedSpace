@@ -89,13 +89,18 @@ func get_grid_pos(x, y):
 	grid_pos.y = y / cell_width_y + pos_offset_y
 	return grid_pos.round()
 
-func spawn_prefab(prefab, grid_pos_x, grid_pos_y, height, height_offset = 0):
+func spawn_prefab(prefab, grid_pos_x, grid_pos_y, height, height_offset = 0, randomize_spot = false):
 	if !(prefab is PackedScene):
 		pass
 	var instanced_scene = prefab.instantiate()
 	add_child(instanced_scene)
 	instanced_scene.position.x = get_actual_pos(grid_pos_x, grid_pos_y).x
 	instanced_scene.position.z = get_actual_pos(grid_pos_x, grid_pos_y).y
+	if randomize_spot:
+		var rng_x = rng.randf_range(-5, 5)
+		var rng_y = rng.randf_range(-5, 5)
+		instanced_scene.position.x += rng_x
+		instanced_scene.position.y += rng_y
 	instanced_scene.position.y = cell_height * height + height_offset
 	return instanced_scene
 
@@ -140,7 +145,6 @@ func get_max_height():
 func _on_player_character_got_killed():
 	game_end = true
 	end_screen_timer.start()
-
 
 func _on_end_screen_timer_timeout():
 	shot_sound.play()
