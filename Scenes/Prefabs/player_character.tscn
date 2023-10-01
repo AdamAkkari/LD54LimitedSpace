@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ntjxmdicu773"]
+[gd_scene load_steps=9 format=3 uid="uid://ntjxmdicu773"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/player_character.gd" id="1_xcpj6"]
 [ext_resource type="Texture2D" uid="uid://d3gg1axx51nan" path="res://Assets/Sprites/crosshair.png" id="2_84aa2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://o2rj7v5buedw" path="res://Assets/Sprites/dash_cooldown.png" id="4_ehusr"]
 [ext_resource type="AudioStream" uid="uid://b8lwwlxehrd8f" path="res://Assets/Sounds/shot.wav" id="5_p7h6r"]
 [ext_resource type="AudioStream" uid="uid://dijducxr6gqr2" path="res://Assets/Sounds/dash.wav" id="6_7ko1y"]
+[ext_resource type="AudioStream" uid="uid://cq03s8dmmee1l" path="res://Assets/Sounds/load.wav" id="7_x5d56"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pbt0v"]
 
@@ -70,6 +71,9 @@ stream = ExtResource("5_p7h6r")
 
 [node name="DashSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_7ko1y")
+
+[node name="LoadSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_x5d56")
 
 [connection signal="timeout" from="shoot_cooldown" to="." method="_on_shoot_cooldown_timeout"]
 [connection signal="timeout" from="dash_timer" to="." method="_on_dash_timer_timeout"]

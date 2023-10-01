@@ -27,6 +27,7 @@ var dead_cam_set = false
 @onready var collider:CollisionShape3D = $CollisionShape3D
 @onready var shootSound:AudioStreamPlayer = $ShootSound
 @onready var dashSound:AudioStreamPlayer = $DashSound
+@onready var loadSound:AudioStreamPlayer = $LoadSound
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -108,6 +109,7 @@ func shoot():
 func _on_shoot_cooldown_timeout():
 	crosshair_enabled_sprite.visible = true
 	crosshair_disabled_sprite.visible = false
+	loadSound.play()
 
 func killed():
 	is_dead = true
