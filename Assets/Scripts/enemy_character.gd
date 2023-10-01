@@ -8,10 +8,17 @@ signal killed
 @export var jump_velocity = 10
 @export var grid:GridGenerator
 @export var can_see_player = false
+@export var is_in_sight = false
+@export var is_shooting = false
 
 @onready var explosion = load("res://Scenes/Prefabs/explosion.tscn")
 @onready var sightOrigin = $SightOrigin
 @onready var sightStart = $SightOrigin/SightStart
+@onready var shotSound = $ShotSound
+@onready var inSightSound = $InSightSound
+@onready var getInSightTimer = $GetInSightTimer
+@onready var aboutToShootTimer = $AboutToShootTimer
+@onready var shootTimer = $ShootTimer
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vertical_velocity = 0
@@ -168,10 +175,31 @@ func check_sight_with_player():
 	if collision:
 		if (collision.collider.is_in_group("player")):
 			can_see_player = true
-			#print_debug("can see player: " + collision.collider.name)
+			if getInSightTimer.is_stopped() and !is_in_sight:
+				getInSightTimer.start()
 		else:
+			if !getInSightTimer.is_stopped():
+				getInSightTimer.stop()
 			can_see_player = false
-			#print_debug("cannot see player: " + collision.collider.name)
 	else:
+		if !getInSightTimer.is_stopped():
+			getInSightTimer.stop()
 		can_see_player = false
-		#print_debug("cannot see anything")
+
+func _on_get_in_sight_timer_timeout():
+	if !is_in_sight:
+		inSightSound.play()
+		print_debug("got in sight")
+		is_in_sight = true
+		aboutToShootTimer.start()
+
+func _on_about_to_shoot_timer_timeout():
+	shotSound.play()
+	is_shooting = true
+	shootTimer.start()
+	if can_see_player:
+		grid.player.got_shot()
+
+func _on_shoot_timer_timeout():
+	is_shooting = false
+	is_in_sight = false

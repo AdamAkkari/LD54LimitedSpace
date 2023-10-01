@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://blyjvqh3t4g8r"]
+[gd_scene load_steps=7 format=3 uid="uid://blyjvqh3t4g8r"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/enemy_character.gd" id="1_r25bl"]
 [ext_resource type="Texture2D" uid="uid://d3gg1axx51nan" path="res://Assets/Sprites/crosshair.png" id="2_h3b3s"]
+[ext_resource type="AudioStream" uid="uid://b8lwwlxehrd8f" path="res://Assets/Sounds/shot.wav" id="3_f245v"]
+[ext_resource type="AudioStream" uid="uid://bguwbk3rgvbga" path="res://Assets/Sounds/in_sight.wav" id="4_uhigc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pbt0v"]
 radius = 0.75
@@ -26,3 +28,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.455621, -0.818203)
 
 [node name="Sprite3D" type="Sprite3D" parent="SightOrigin/SightStart"]
 texture = ExtResource("2_h3b3s")
+
+[node name="ShotSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_f245v")
+volume_db = 1.0
+
+[node name="InSightSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_uhigc")
+
+[node name="GetInSightTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="AboutToShootTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[connection signal="timeout" from="GetInSightTimer" to="." method="_on_get_in_sight_timer_timeout"]
+[connection signal="timeout" from="AboutToShootTimer" to="." method="_on_about_to_shoot_timer_timeout"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]

@@ -11,6 +11,7 @@ var horizontal_velocity = Vector2.ZERO
 var vertical_velocity = 0
 var dash_cooldown_value = 4
 var is_dashing = false
+var is_immune = false
 var is_dead = false
 var dead_cam_set = false
 
@@ -19,6 +20,7 @@ var dead_cam_set = false
 @onready var camera:Camera3D = $Camera3D
 @onready var shoot_cooldown:Timer = $shoot_cooldown
 @onready var dash_timer:Timer = $dash_timer
+@onready var dash_immune_timer:Timer = $dash_immune_timer
 @onready var dash_cooldown:Timer = $dash_cooldown_part
 @onready var center_container = $HUD/CenterContainer
 @onready var crosshair_enabled_sprite = $HUD/CenterContainer/crosshair_enabled
@@ -68,8 +70,10 @@ func handle_movement(delta):
 	# Dash check
 	if horizontal_velocity != Vector2.ZERO and Input.is_action_just_pressed("dash") and can_dash():
 		is_dashing = true
+		is_immune = true
 		dashSound.play()
 		dash_timer.start()
+		dash_immune_timer.start()
 		dash_cooldown_value = 0
 		dash_cooldown_sprite_1.visible = false
 		dash_cooldown_sprite_2.visible = false
@@ -114,10 +118,13 @@ func _on_shoot_cooldown_timeout():
 	crosshair_disabled_sprite.visible = false
 	loadSound.play()
 
+func got_shot():
+	if !is_immune:
+		killed()
+
 func killed():
 	is_dead = true
-	crosshair_disabled_sprite.visible = false
-	crosshair_enabled_sprite.visible = false
+	center_container.visible = false
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	collider.disabled = true
 
@@ -149,3 +156,6 @@ func _on_grid_generator_enemy_added(enemy):
 	if instanced_scene is enemyIndicator:
 		instanced_scene.initialize(self, enemy)
 	return instanced_scene
+
+func _on_dash_immune_timer_timeout():
+	is_immune = false
