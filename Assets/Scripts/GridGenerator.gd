@@ -10,6 +10,8 @@ signal enemy_added
 @export var cell_width_y = 10
 @export var cell_height = 5
 @export var player:CharacterBody3D
+@export var pauseCanvas:CanvasLayer
+@export var is_paused = false
 
 @onready var floor_cell = load("res://Scenes/Prefabs/FloorCell.tscn")
 @onready var building_cell = load("res://Scenes/Prefabs/BuildingCell.tscn")
@@ -46,6 +48,9 @@ func _process(delta):
 		for i in floor(difficulty) + 1:
 			add_random_enemy()
 		print_debug("current difficulty: " + str(difficulty))
+	if Input.is_action_just_pressed("ui_cancel"):
+		is_paused = !is_paused
+	pauseCanvas.visible = is_paused
 
 func increment_cell(x, y):
 	if x >= grid_size_x or x < 0:

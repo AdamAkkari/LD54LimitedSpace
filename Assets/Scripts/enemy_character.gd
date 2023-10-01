@@ -17,10 +17,10 @@ signal killed
 @onready var sightStart = $SightOrigin/SightStart
 @onready var shotSound = $ShotSound
 @onready var inSightSound = $InSightSound
-@onready var getInSightTimer = $GetInSightTimer
-@onready var aboutToShootTimer = $AboutToShootTimer
-@onready var shootTimer = $ShootTimer
-@onready var actualShootTimer = $ActualShootTimer
+@onready var getInSightTimer:Timer = $GetInSightTimer
+@onready var aboutToShootTimer:Timer = $AboutToShootTimer
+@onready var shootTimer:Timer = $ShootTimer
+@onready var actualShootTimer:Timer = $ActualShootTimer
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vertical_velocity = 0
@@ -39,9 +39,18 @@ func kill():
 	queue_free()
 
 func _physics_process(delta):
-	check_sight_with_player()
-	handle_movement(delta)
-	sightOrigin.look_at(Vector3(grid.player.position.x, position.y, grid.player.position.z))
+#	@onready var getInSightTimer = $GetInSightTimer
+#@onready var aboutToShootTimer = $AboutToShootTimer
+#@onready var shootTimer = $ShootTimer
+#@onready var actualShootTimer = $ActualShootTimer
+	getInSightTimer.paused = grid.is_paused
+	aboutToShootTimer.paused = grid.is_paused
+	shootTimer.paused = grid.is_paused
+	actualShootTimer.paused = grid.is_paused
+	if !grid.is_paused:
+		check_sight_with_player()
+		handle_movement(delta)
+		sightOrigin.look_at(Vector3(grid.player.position.x, position.y, grid.player.position.z))
 
 func handle_movement(delta):
 	if is_moving:

@@ -14,6 +14,7 @@ var is_dashing = false
 var is_immune = false
 var is_dead = false
 var dead_cam_set = false
+var saved_velocity = Vector3.ZERO
 
 @onready var indicator = load("res://Scenes/Prefabs/enemy_indicator.tscn")
 
@@ -38,22 +39,25 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
-	if !is_dead:
-		handle_movement(delta)
-		handle_mouse_lock()
-		shoot()
-	else:
-		var target_pos = Vector3(grid.grid_size_x * grid.cell_width_x, grid.get_max_height() * grid.cell_height, grid.grid_size_y * grid.cell_width_y)
-		if position.distance_to(target_pos) > 1:
-			velocity = (target_pos - position).normalized() * 10
+	if grid.is_paused:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if !grid.is_paused:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if !is_dead:
+			handle_movement(delta)
+			shoot()
 		else:
-			dead_cam_set = true
-			velocity = Vector3.ZERO
-		move_and_slide()
-		camera.look_at(Vector3(0, target_pos.y / 2, 0))
+			var target_pos = Vector3(grid.grid_size_x * grid.cell_width_x, grid.get_max_height() * grid.cell_height, grid.grid_size_y * grid.cell_width_y)
+			if position.distance_to(target_pos) > 1:
+				velocity = (target_pos - position).normalized() * 10
+			else:
+				dead_cam_set = true
+				velocity = Vector3.ZERO
+			move_and_slide()
+			camera.look_at(Vector3(0, target_pos.y / 2, 0))
 
 func _input(event):
-	if event is InputEventMouseMotion and !is_dead:
+	if event is InputEventMouseMotion and !is_dead and !grid.is_paused:
 		rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
 		camera.rotate_x(deg_to_rad(-event.relative.y * mouse_sensitivity))
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
@@ -90,11 +94,6 @@ func handle_movement(delta):
 	
 	# Apply movement
 	move_and_slide()
-
-func handle_mouse_lock():
-	# Somekind of ternary operation equivalent to toggle the locking of the mouse at the center of the screen
-	if Input.is_action_just_pressed("ui_cancel") and !is_dead:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE else Input.MOUSE_MODE_VISIBLE
 
 func shoot():
 	if Input.is_action_just_pressed("shoot") and shoot_cooldown.is_stopped():
