@@ -14,6 +14,7 @@ signal enemy_added
 @export var is_paused = false
 
 @onready var floor_cell = load("res://Scenes/Prefabs/FloorCell.tscn")
+@onready var wall_cell = load("res://Scenes/Prefabs/WallCell.tscn")
 @onready var building_cell = load("res://Scenes/Prefabs/BuildingCell.tscn")
 @onready var enemy_prefab = load("res://Scenes/Prefabs/enemy_character.tscn")
 
@@ -34,9 +35,14 @@ func _ready():
 	# Initialize grid
 	for x in range(grid_size_x):
 		grid.append([])
+		spawn_prefab(wall_cell, x, -1, 0)
+		spawn_prefab(wall_cell, x, grid_size_y, 0)
 		for y in range(grid_size_y):
 			grid[x].append(0)
 			spawn_prefab(floor_cell, x, y, 0)
+	for y in range(grid_size_y):
+		spawn_prefab(wall_cell, -1, y, 0)
+		spawn_prefab(wall_cell, grid_size_x, y, 0)
 	add_enemy(2, 0)
 	var player_init_pos = get_actual_pos(2, 4)
 	player.position.x = player_init_pos.x
