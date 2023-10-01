@@ -12,6 +12,7 @@ signal killed
 @export var is_shooting = false
 
 @onready var explosion = load("res://Scenes/Prefabs/explosion.tscn")
+@onready var bullet = load("res://Scenes/Prefabs/bullet.tscn")
 @onready var sightOrigin = $SightOrigin
 @onready var sightStart = $SightOrigin/SightStart
 @onready var shotSound = $ShotSound
@@ -19,6 +20,7 @@ signal killed
 @onready var getInSightTimer = $GetInSightTimer
 @onready var aboutToShootTimer = $AboutToShootTimer
 @onready var shootTimer = $ShootTimer
+@onready var actualShootTimer = $ActualShootTimer
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vertical_velocity = 0
@@ -189,17 +191,22 @@ func check_sight_with_player():
 func _on_get_in_sight_timer_timeout():
 	if !is_in_sight:
 		inSightSound.play()
-		print_debug("got in sight")
 		is_in_sight = true
 		aboutToShootTimer.start()
 
 func _on_about_to_shoot_timer_timeout():
-	shotSound.play()
 	is_shooting = true
 	shootTimer.start()
-	if can_see_player:
-		grid.player.got_shot()
+	actualShootTimer.start()
 
 func _on_shoot_timer_timeout():
 	is_shooting = false
 	is_in_sight = false
+
+func _on_actual_shoot_timer_timeout():
+	shotSound.play()
+	if can_see_player:
+		grid.player.got_shot()
+		var instanced_scene = bullet.instantiate()
+		add_child(instanced_scene)
+		instanced_scene.initialize(grid.player)

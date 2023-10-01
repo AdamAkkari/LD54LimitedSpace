@@ -41,12 +41,18 @@ wait_time = 2.0
 one_shot = true
 
 [node name="AboutToShootTimer" type="Timer" parent="."]
+wait_time = 0.75
 one_shot = true
 
 [node name="ShootTimer" type="Timer" parent="."]
 wait_time = 0.25
 one_shot = true
 
+[node name="ActualShootTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
 [connection signal="timeout" from="GetInSightTimer" to="." method="_on_get_in_sight_timer_timeout"]
 [connection signal="timeout" from="AboutToShootTimer" to="." method="_on_about_to_shoot_timer_timeout"]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="timeout" from="ActualShootTimer" to="." method="_on_actual_shoot_timer_timeout"]

@@ -45,7 +45,6 @@ func _physics_process(delta):
 	else:
 		var target_pos = Vector3(grid.grid_size_x * grid.cell_width_x, grid.get_max_height() * grid.cell_height, grid.grid_size_y * grid.cell_width_y)
 		if position.distance_to(target_pos) > 1:
-			print_debug(position.distance_to(target_pos))
 			velocity = (target_pos - position).normalized() * 10
 		else:
 			dead_cam_set = true

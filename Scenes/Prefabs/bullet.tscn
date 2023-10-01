@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dd46pq6gaefed"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Bullet.gd" id="1_0o3sx"]
+[ext_resource type="Texture2D" uid="uid://502el5uudxnw" path="res://Assets/Sprites/bullet.png" id="2_mva2w"]
+[ext_resource type="ArrayMesh" uid="uid://1gbymhushonp" path="res://Assets/Models/bullet.obj" id="3_0sh81"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vh5dx"]
+transparency = 1
+albedo_texture = ExtResource("2_mva2w")
+emission_enabled = true
+emission = Color(1, 1, 0, 1)
+
+[node name="Bullet" type="Node3D"]
+script = ExtResource("1_0o3sx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 2.38498e-07, 1, 0, -20, 1.19249e-08, 0, 0, 6.39711)
+material_override = SubResource("StandardMaterial3D_vh5dx")
+mesh = ExtResource("3_0sh81")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
