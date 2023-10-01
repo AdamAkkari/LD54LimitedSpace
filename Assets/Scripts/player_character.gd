@@ -25,6 +25,8 @@ var dead_cam_set = false
 @onready var dash_cooldown_sprite_3 = $HUD/CenterContainer/dash_cooldown_br
 @onready var dash_cooldown_sprite_4 = $HUD/CenterContainer/dash_cooldown_bl
 @onready var collider:CollisionShape3D = $CollisionShape3D
+@onready var shootSound:AudioStreamPlayer = $ShootSound
+@onready var dashSound:AudioStreamPlayer = $DashSound
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -59,8 +61,10 @@ func handle_movement(delta):
 		horizontal_velocity = horizontal_velocity.normalized() * dash_speed
 	velocity = horizontal_velocity.x * global_transform.basis.x + horizontal_velocity.y * global_transform.basis.z
 	
+	# Dash check
 	if horizontal_velocity != Vector2.ZERO and Input.is_action_just_pressed("dash") and can_dash():
 		is_dashing = true
+		dashSound.play()
 		dash_timer.start()
 		dash_cooldown_value = 0
 		dash_cooldown_sprite_1.visible = false
@@ -96,6 +100,7 @@ func shoot():
 				collision.collider.kill()
 		else:
 			print_debug("null")
+		shootSound.play()
 		shoot_cooldown.start()
 		crosshair_enabled_sprite.visible = false
 		crosshair_disabled_sprite.visible = true
