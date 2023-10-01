@@ -20,6 +20,8 @@ var ennemies = []
 var pos_offset_x = 0.0
 var pos_offset_y = 0.0
 
+var difficulty = 0.0
+
 var rng = RandomNumberGenerator.new()
 
 func _ready():
@@ -33,7 +35,17 @@ func _ready():
 		for y in range(grid_size_y):
 			grid[x].append(0)
 			spawn_prefab(floor_cell, x, y, 0)
-	add_random_enemy()
+	add_enemy(2, 0)
+	var player_init_pos = get_actual_pos(2, 4)
+	player.position.x = player_init_pos.x
+	player.position.z = player_init_pos.y
+
+func _process(delta):
+	if ennemies.size() == 0:
+		difficulty += 0.2
+		for i in floor(difficulty) + 1:
+			add_random_enemy()
+		print_debug("current difficulty: " + str(difficulty))
 
 func increment_cell(x, y):
 	if x >= grid_size_x or x < 0:
@@ -73,6 +85,9 @@ func add_random_cell():
 func add_random_enemy():
 	var x = rng.randi_range(0, grid_size_x - 1)
 	var y = rng.randi_range(0, grid_size_y - 1)
+	add_enemy(x, y)
+
+func add_enemy(x, y):
 	var instance = spawn_prefab(enemy_prefab, x, y, grid[x][y], 1.5)
 	instance.killed.connect(_on_enemy_killed)
 	instance.grid = self
@@ -87,7 +102,6 @@ func _on_enemy_killed(x, y, ennemy):
 	var grid_pos = get_grid_pos(x, y)
 	increment_cell(grid_pos.x, grid_pos.y)
 	ennemies.erase(ennemy)
-	add_random_enemy()
 
 func get_player_grid_pos():
 	if player and !player.is_dead:

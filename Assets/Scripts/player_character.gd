@@ -93,7 +93,7 @@ func handle_movement(delta):
 
 func handle_mouse_lock():
 	# Somekind of ternary operation equivalent to toggle the locking of the mouse at the center of the screen
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_cancel") and !is_dead:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE else Input.MOUSE_MODE_VISIBLE
 
 func shoot():
