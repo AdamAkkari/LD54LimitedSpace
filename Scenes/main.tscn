@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://38l7f3ddtwyx"]
+[gd_scene load_steps=14 format=3 uid="uid://38l7f3ddtwyx"]
 
 [ext_resource type="PackedScene" uid="uid://ntjxmdicu773" path="res://Scenes/Prefabs/player_character.tscn" id="2_bysrl"]
 [ext_resource type="PackedScene" uid="uid://dp6exmu8u7o3o" path="res://Scenes/Prefabs/GridGenerator.tscn" id="2_tldds"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cpl412fjsvim4" path="res://Assets/Sprites/ui/quit.png" id="5_rltkn"]
 [ext_resource type="Texture2D" uid="uid://dkelm7gxifpnb" path="res://Assets/Sprites/ui/restart.png" id="6_2jwvw"]
 [ext_resource type="Script" path="res://Assets/Scripts/QuitButtonUI.gd" id="6_645wx"]
+[ext_resource type="Texture2D" uid="uid://k1ufynoc3ga3" path="res://Assets/Sprites/sandNoCell.png" id="8_v6je2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i5m37"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -20,6 +21,13 @@ background_mode = 2
 sky = SubResource("Sky_byeq3")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ss2r8"]
+albedo_texture = ExtResource("8_v6je2")
+uv1_scale = Vector3(10000, 10000, 10000)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yxtnl"]
+size = Vector2(10000, 10000)
 
 [node name="Node3D" type="Node3D"]
 
@@ -100,6 +108,11 @@ texture_disabled = ExtResource("5_rltkn")
 texture_focused = ExtResource("5_rltkn")
 stretch_mode = 0
 script = ExtResource("6_645wx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.001, 0)
+material_override = SubResource("StandardMaterial3D_ss2r8")
+mesh = SubResource("PlaneMesh_yxtnl")
 
 [connection signal="enemy_added" from="GridGenerator" to="player_character" method="_on_grid_generator_enemy_added"]
 [connection signal="pressed" from="PauseCanvas/Container/RestartButton" to="PauseCanvas/Container/RestartButton" method="_on_pressed"]
