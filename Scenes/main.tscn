@@ -23,9 +23,10 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ss2r8"]
-albedo_color = Color(0.854902, 0.854902, 0.854902, 1)
+albedo_color = Color(0.85098, 0.65098, 0.52549, 1)
 albedo_texture = ExtResource("8_v6je2")
 uv1_scale = Vector3(10000, 10000, 10000)
+uv2_scale = Vector3(10000, 10000, 10000)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yxtnl"]
 size = Vector2(10000, 10000)

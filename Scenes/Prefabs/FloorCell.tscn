@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://uv30lvkfv8jn" path="res://Assets/sand.png" id="1_uoqnb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_88n5t"]
+albedo_color = Color(1, 0.611765, 0.4, 1)
 albedo_texture = ExtResource("1_uoqnb")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x5n07"]

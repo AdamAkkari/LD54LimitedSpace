@@ -5,7 +5,7 @@ class_name Enemy
 signal killed
 
 @export var speed = 8
-@export var jump_velocity = 13
+@export var jump_velocity = 15
 @export var grid:GridGenerator
 @export var can_see_player = false
 @export var is_in_sight = false
