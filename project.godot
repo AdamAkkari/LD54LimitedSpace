@@ -15,6 +15,10 @@ run/main_scene="res://Scenes/main.tscn"
 config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://Assets/Sprites/icon.png"
 
+[display]
+
+window/size/mode=3
+
 [input]
 
 move_forward={
@@ -60,7 +64,7 @@ left_click={
 
 [player]
 
-mouse_sensitivity=0.25
+mouse_sensitivity=0.1
 
 [rendering]
 

@@ -34,25 +34,31 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="crosshair_enabled" type="Sprite2D" parent="HUD/CenterContainer"]
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_84aa2")
 
 [node name="crosshair_disabled" type="Sprite2D" parent="HUD/CenterContainer"]
 visible = false
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("3_aqi2w")
 
 [node name="dash_cooldown_tl" type="Sprite2D" parent="HUD/CenterContainer"]
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_ehusr")
 
 [node name="dash_cooldown_tr" type="Sprite2D" parent="HUD/CenterContainer"]
 rotation = 1.5708
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_ehusr")
 
 [node name="dash_cooldown_bl" type="Sprite2D" parent="HUD/CenterContainer"]
 rotation = 4.71239
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_ehusr")
 
 [node name="dash_cooldown_br" type="Sprite2D" parent="HUD/CenterContainer"]
 rotation = 3.14159
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_ehusr")
 
 [node name="shoot_cooldown" type="Timer" parent="."]

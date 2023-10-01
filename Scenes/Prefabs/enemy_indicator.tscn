@@ -8,9 +8,9 @@
 script = ExtResource("1_sa6fq")
 
 [node name="in_sight_indicator" type="Sprite2D" parent="."]
-scale = Vector2(2.5, 2.5)
+scale = Vector2(4, 4)
 texture = ExtResource("1_4rlyx")
 
 [node name="indicator" type="Sprite2D" parent="."]
-scale = Vector2(2.5, 2.5)
+scale = Vector2(4, 4)
 texture = ExtResource("2_cpx4t")
