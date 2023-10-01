@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://blyjvqh3t4g8r"]
+[gd_scene load_steps=5 format=3 uid="uid://blyjvqh3t4g8r"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/enemy_character.gd" id="1_r25bl"]
+[ext_resource type="Texture2D" uid="uid://d3gg1axx51nan" path="res://Assets/Sprites/crosshair.png" id="2_h3b3s"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pbt0v"]
 radius = 0.75
@@ -17,3 +18,11 @@ shape = SubResource("CapsuleShape3D_pbt0v")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_fp4o3")
+
+[node name="SightOrigin" type="Node3D" parent="."]
+
+[node name="SightStart" type="Node3D" parent="SightOrigin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.455621, -0.818203)
+
+[node name="Sprite3D" type="Sprite3D" parent="SightOrigin/SightStart"]
+texture = ExtResource("2_h3b3s")

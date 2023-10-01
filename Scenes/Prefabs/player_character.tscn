@@ -10,7 +10,7 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pbt0v"]
 
-[node name="player_character" type="CharacterBody3D"]
+[node name="player_character" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_xcpj6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

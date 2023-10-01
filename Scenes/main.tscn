@@ -34,3 +34,5 @@ grid = NodePath("../GridGenerator")
 grid_size_x = 7
 grid_size_y = 7
 player = NodePath("../player_character")
+
+[connection signal="enemy_added" from="GridGenerator" to="player_character" method="_on_grid_generator_enemy_added"]

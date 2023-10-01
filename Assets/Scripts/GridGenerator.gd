@@ -2,6 +2,8 @@ extends Node3D
 
 class_name GridGenerator
 
+signal enemy_added
+
 @export var grid_size_x = 10
 @export var grid_size_y = 10
 @export var cell_width_x = 10
@@ -14,6 +16,7 @@ class_name GridGenerator
 @onready var enemy_prefab = load("res://Scenes/Prefabs/enemy_character.tscn")
 
 var grid = []
+var ennemies = []
 var pos_offset_x = 0.0
 var pos_offset_y = 0.0
 
@@ -70,20 +73,20 @@ func add_random_cell():
 func add_random_enemy():
 	var x = rng.randi_range(0, grid_size_x - 1)
 	var y = rng.randi_range(0, grid_size_y - 1)
-	var offset = 1.5
-	if grid[x][y] > 0:
-		offset += cell_height
-	var instance = spawn_prefab(enemy_prefab, x, y, grid[x][y], 1.5 + offset)
+	var instance = spawn_prefab(enemy_prefab, x, y, grid[x][y], 1.5)
 	instance.killed.connect(_on_enemy_killed)
 	instance.grid = self
+	ennemies.append(instance)
+	emit_signal("enemy_added", instance)
 
 # TODO: adapt for spawn management
 func _on_timer_timeout():
 	return
 
-func _on_enemy_killed(x, y):
+func _on_enemy_killed(x, y, ennemy):
 	var grid_pos = get_grid_pos(x, y)
 	increment_cell(grid_pos.x, grid_pos.y)
+	ennemies.erase(ennemy)
 	add_random_enemy()
 
 func get_player_grid_pos():

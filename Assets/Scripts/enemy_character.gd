@@ -1,12 +1,17 @@
 extends CharacterBody3D
 
+class_name Enemy
+
 signal killed
 
 @export var speed = 8
 @export var jump_velocity = 10
 @export var grid:GridGenerator
+@export var can_see_player = false
 
 @onready var explosion = load("res://Scenes/Prefabs/explosion.tscn")
+@onready var sightOrigin = $SightOrigin
+@onready var sightStart = $SightOrigin/SightStart
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vertical_velocity = 0
@@ -21,12 +26,14 @@ func kill():
 	var instanced_scene = explosion.instantiate()
 	get_parent().add_child(instanced_scene)
 	instanced_scene.position = position
-	emit_signal("killed", position.x, position.z)
+	emit_signal("killed", position.x, position.z, self)
 	queue_free()
 
 func _physics_process(delta):
+	check_sight_with_player()
 	handle_movement(delta)
-	
+	sightOrigin.look_at(Vector3(grid.player.position.x, position.y, grid.player.position.z))
+
 func handle_movement(delta):
 	if is_moving:
 		var target_pos = grid.get_actual_pos(target_grid_pos.x, target_grid_pos.y)
@@ -152,3 +159,19 @@ func get_next_target_pos():
 				target_grid_pos = Vector2(grid_pos.x - 1, grid_pos.y)
 				return
 		target_grid_pos = grid_pos
+
+func check_sight_with_player():
+	var space = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(global_position,
+		(grid.player.global_position - global_position).normalized() * 1000)
+	var collision = space.intersect_ray(query)
+	if collision:
+		if (collision.collider.is_in_group("player")):
+			can_see_player = true
+			#print_debug("can see player: " + collision.collider.name)
+		else:
+			can_see_player = false
+			#print_debug("cannot see player: " + collision.collider.name)
+	else:
+		can_see_player = false
+		#print_debug("cannot see anything")

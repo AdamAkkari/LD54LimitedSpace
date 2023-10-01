@@ -14,10 +14,13 @@ var is_dashing = false
 var is_dead = false
 var dead_cam_set = false
 
+@onready var indicator = load("res://Scenes/Prefabs/enemy_indicator.tscn")
+
 @onready var camera:Camera3D = $Camera3D
 @onready var shoot_cooldown:Timer = $shoot_cooldown
 @onready var dash_timer:Timer = $dash_timer
 @onready var dash_cooldown:Timer = $dash_cooldown_part
+@onready var center_container = $HUD/CenterContainer
 @onready var crosshair_enabled_sprite = $HUD/CenterContainer/crosshair_enabled
 @onready var crosshair_disabled_sprite = $HUD/CenterContainer/crosshair_disabled
 @onready var dash_cooldown_sprite_1 = $HUD/CenterContainer/dash_cooldown_tl
@@ -139,3 +142,10 @@ func _on_dash_cooldown_timeout():
 
 func can_dash():
 	return dash_cooldown_value >= 4
+
+func _on_grid_generator_enemy_added(enemy):
+	var instanced_scene = indicator.instantiate()
+	center_container.add_child(instanced_scene)
+	if instanced_scene is enemyIndicator:
+		instanced_scene.initialize(self, enemy)
+	return instanced_scene

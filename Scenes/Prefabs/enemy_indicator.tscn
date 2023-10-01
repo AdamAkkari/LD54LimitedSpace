@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://blsbg4mlr7v0e"]
+
+[ext_resource type="Texture2D" uid="uid://cqs548yxwcnq3" path="res://Assets/Sprites/pointer.png" id="1_4rlyx"]
+[ext_resource type="Script" path="res://Assets/Scripts/enemy_indicator.gd" id="1_sa6fq"]
+[ext_resource type="Texture2D" uid="uid://bpwd6gljhhwev" path="res://Assets/Sprites/pointer_hollow.png" id="2_cpx4t"]
+
+[node name="enemy_indicator" type="Node2D"]
+script = ExtResource("1_sa6fq")
+
+[node name="in_sight_indicator" type="Sprite2D" parent="."]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("1_4rlyx")
+
+[node name="indicator" type="Sprite2D" parent="."]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_cpx4t")
