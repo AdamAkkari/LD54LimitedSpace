@@ -39,11 +39,11 @@ func kill():
 	queue_free()
 
 func _physics_process(delta):
-	getInSightTimer.paused = grid.is_paused
-	aboutToShootTimer.paused = grid.is_paused
-	shootTimer.paused = grid.is_paused
-	actualShootTimer.paused = grid.is_paused
-	if !grid.is_paused:
+	getInSightTimer.paused = grid.is_paused or !grid.game_start
+	aboutToShootTimer.paused = grid.is_paused or !grid.game_start
+	shootTimer.paused = grid.is_paused or !grid.game_start
+	actualShootTimer.paused = grid.is_paused or !grid.game_start
+	if !grid.is_paused and grid.game_start:
 		check_sight_with_player()
 		handle_movement(delta)
 		sightOrigin.look_at(Vector3(grid.player.position.x, position.y, grid.player.position.z))

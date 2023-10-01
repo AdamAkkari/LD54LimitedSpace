@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://38l7f3ddtwyx"]
+[gd_scene load_steps=17 format=3 uid="uid://38l7f3ddtwyx"]
 
 [ext_resource type="PackedScene" uid="uid://ntjxmdicu773" path="res://Scenes/Prefabs/player_character.tscn" id="2_bysrl"]
 [ext_resource type="PackedScene" uid="uid://dp6exmu8u7o3o" path="res://Scenes/Prefabs/GridGenerator.tscn" id="2_tldds"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cpl412fjsvim4" path="res://Assets/Sprites/ui/quit.png" id="5_rltkn"]
 [ext_resource type="Texture2D" uid="uid://dkelm7gxifpnb" path="res://Assets/Sprites/ui/restart.png" id="6_2jwvw"]
 [ext_resource type="Script" path="res://Assets/Scripts/QuitButtonUI.gd" id="6_645wx"]
+[ext_resource type="FontFile" uid="uid://fonlmus5gtwo" path="res://Assets/Fonts/Albertson.otf" id="8_lkhm1"]
 [ext_resource type="Texture2D" uid="uid://k1ufynoc3ga3" path="res://Assets/Sprites/sandNoCell.png" id="8_v6je2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i5m37"]
@@ -31,6 +32,18 @@ uv2_scale = Vector3(10000, 10000, 10000)
 [sub_resource type="PlaneMesh" id="PlaneMesh_yxtnl"]
 size = Vector2(10000, 10000)
 
+[sub_resource type="LabelSettings" id="LabelSettings_oq8es"]
+font = ExtResource("8_lkhm1")
+font_size = 100
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1vmfq"]
+font = ExtResource("8_lkhm1")
+font_size = 80
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
 [node name="Node3D" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -45,11 +58,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.128, 0)
 jump_velocity = 15.0
 grid = NodePath("../GridGenerator")
 
-[node name="GridGenerator" parent="." node_paths=PackedStringArray("player", "pauseCanvas") instance=ExtResource("2_tldds")]
+[node name="GridGenerator" parent="." node_paths=PackedStringArray("player", "pauseCanvas", "startCanvas") instance=ExtResource("2_tldds")]
 grid_size_x = 5
 grid_size_y = 5
 player = NodePath("../player_character")
 pauseCanvas = NodePath("../PauseCanvas")
+startCanvas = NodePath("../StartCanvas")
 
 [node name="PauseCanvas" type="CanvasLayer" parent="."]
 
@@ -115,6 +129,44 @@ script = ExtResource("6_645wx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.001, 0)
 material_override = SubResource("StandardMaterial3D_ss2r8")
 mesh = SubResource("PlaneMesh_yxtnl")
+
+[node name="StartCanvas" type="CanvasLayer" parent="."]
+
+[node name="TitleContainer" type="VBoxContainer" parent="StartCanvas"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -860.0
+offset_top = 114.0
+offset_right = 860.0
+offset_bottom = 217.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="StartCanvas/TitleContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "\"This town ain't big enough for the both of us\""
+label_settings = SubResource("LabelSettings_oq8es")
+horizontal_alignment = 1
+
+[node name="StartContainer" type="VBoxContainer" parent="StartCanvas"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -209.5
+offset_top = -162.0
+offset_right = 209.5
+offset_bottom = -79.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+
+[node name="Label" type="Label" parent="StartCanvas/StartContainer"]
+layout_mode = 2
+text = "Click to solve this problem"
+label_settings = SubResource("LabelSettings_1vmfq")
 
 [connection signal="got_killed" from="player_character" to="GridGenerator" method="_on_player_character_got_killed"]
 [connection signal="enemy_added" from="GridGenerator" to="player_character" method="_on_grid_generator_enemy_added"]

@@ -11,6 +11,7 @@ signal enemy_added
 @export var cell_height = 5
 @export var player:CharacterBody3D
 @export var pauseCanvas:CanvasLayer
+@export var startCanvas:CanvasLayer
 @export var is_paused = false
 
 @onready var floor_cell = load("res://Scenes/Prefabs/FloorCell.tscn")
@@ -31,6 +32,7 @@ var pos_offset_y = 0.0
 
 var difficulty = 0.0
 var kill_count = 0
+var game_start = false
 var game_end = false
 
 var rng = RandomNumberGenerator.new()
@@ -57,15 +59,22 @@ func _ready():
 	player.position.z = player_init_pos.y
 
 func _process(delta):
+	pauseCanvas.visible = is_paused
+	kill_label.visible = !is_paused and !game_end and game_start
+	if !game_start:
+		if Input.is_action_just_pressed("left_click"):
+			game_start = true
+			startCanvas.visible = false
+		return
 	if ennemies.size() == 0:
 		difficulty += 0.2
 		for i in floor(difficulty) + 1:
 			add_random_enemy()
 	if Input.is_action_just_pressed("ui_cancel"):
 		is_paused = !is_paused
-	pauseCanvas.visible = is_paused
-	kill_label.visible = !is_paused and !game_end
 	kill_label.text = "Kills: " + str(kill_count)
+	end_screen_timer.paused = is_paused
+	second_title_timer.paused = is_paused
 
 func increment_cell(x, y):
 	if x >= grid_size_x or x < 0:

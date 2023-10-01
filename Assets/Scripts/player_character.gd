@@ -41,9 +41,9 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
-	if grid.is_paused:
+	if grid.is_paused or !grid.game_start:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	if !grid.is_paused:
+	if !grid.is_paused and grid.game_start:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		if !is_dead:
 			handle_movement(delta)
@@ -59,7 +59,7 @@ func _physics_process(delta):
 			camera.look_at(Vector3(0, target_pos.y / 2, 0))
 
 func _input(event):
-	if event is InputEventMouseMotion and !is_dead and !grid.is_paused:
+	if event is InputEventMouseMotion and !is_dead and !grid.is_paused and grid.game_start:
 		rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
 		camera.rotate_x(deg_to_rad(-event.relative.y * mouse_sensitivity))
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
