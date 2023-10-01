@@ -23,6 +23,7 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ss2r8"]
+albedo_color = Color(0.854902, 0.854902, 0.854902, 1)
 albedo_texture = ExtResource("8_v6je2")
 uv1_scale = Vector3(10000, 10000, 10000)
 
@@ -40,7 +41,7 @@ shadow_enabled = true
 
 [node name="player_character" parent="." node_paths=PackedStringArray("grid") instance=ExtResource("2_bysrl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.128, 0)
-jump_velocity = 11.0
+jump_velocity = 15.0
 grid = NodePath("../GridGenerator")
 
 [node name="GridGenerator" parent="." node_paths=PackedStringArray("player", "pauseCanvas") instance=ExtResource("2_tldds")]
@@ -114,6 +115,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.001, 0)
 material_override = SubResource("StandardMaterial3D_ss2r8")
 mesh = SubResource("PlaneMesh_yxtnl")
 
+[connection signal="got_killed" from="player_character" to="GridGenerator" method="_on_player_character_got_killed"]
 [connection signal="enemy_added" from="GridGenerator" to="player_character" method="_on_grid_generator_enemy_added"]
 [connection signal="pressed" from="PauseCanvas/Container/RestartButton" to="PauseCanvas/Container/RestartButton" method="_on_pressed"]
 [connection signal="pressed" from="PauseCanvas/Container/QuitButton" to="PauseCanvas/Container/QuitButton" method="_on_pressed"]

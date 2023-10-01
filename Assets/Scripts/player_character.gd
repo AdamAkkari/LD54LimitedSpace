@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+signal got_killed
+
 @export var speed = 10
 @export var dash_speed = 35
 @export var jump_velocity = 4.5
@@ -129,6 +131,7 @@ func killed():
 	center_container.visible = false
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	collider.disabled = true
+	emit_signal("got_killed")
 
 func _on_dash_timer_timeout():
 	is_dashing = false

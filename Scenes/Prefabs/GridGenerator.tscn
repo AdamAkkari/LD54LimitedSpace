@@ -1,6 +1,81 @@
-[gd_scene load_steps=2 format=3 uid="uid://dp6exmu8u7o3o"]
+[gd_scene load_steps=6 format=3 uid="uid://dp6exmu8u7o3o"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/GridGenerator.gd" id="1_0pj35"]
+[ext_resource type="FontFile" uid="uid://fonlmus5gtwo" path="res://Assets/Fonts/Albertson.otf" id="2_x7y55"]
+[ext_resource type="AudioStream" uid="uid://b8lwwlxehrd8f" path="res://Assets/Sounds/shot.wav" id="3_0mvgu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3r82l"]
+font = ExtResource("2_x7y55")
+font_size = 80
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_apkp1"]
+font = ExtResource("2_x7y55")
+font_size = 200
+outline_size = 30
+outline_color = Color(0, 0, 0, 1)
 
 [node name="GridGenerator" type="Node3D"]
 script = ExtResource("1_0pj35")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="killLabel" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 29.0
+offset_right = 158.0
+offset_bottom = 95.0
+text = "Kills: "
+label_settings = SubResource("LabelSettings_3r82l")
+
+[node name="CenterContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -97.5
+offset_top = -85.0
+offset_right = 97.5
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="endKillLabel" type="Label" parent="CanvasLayer/CenterContainer"]
+visible = false
+layout_mode = 2
+text = "Kills:"
+label_settings = SubResource("LabelSettings_apkp1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="endHeightLabel" type="Label" parent="CanvasLayer/CenterContainer"]
+visible = false
+layout_mode = 2
+text = "Height:"
+label_settings = SubResource("LabelSettings_apkp1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="endScreenTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="secondTitleTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="shotSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_0mvgu")
+
+[connection signal="timeout" from="endScreenTimer" to="." method="_on_end_screen_timer_timeout"]
+[connection signal="timeout" from="secondTitleTimer" to="." method="_on_second_title_timer_timeout"]

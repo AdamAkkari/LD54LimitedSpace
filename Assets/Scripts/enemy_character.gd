@@ -5,7 +5,7 @@ class_name Enemy
 signal killed
 
 @export var speed = 8
-@export var jump_velocity = 10
+@export var jump_velocity = 13
 @export var grid:GridGenerator
 @export var can_see_player = false
 @export var is_in_sight = false
@@ -65,6 +65,8 @@ func handle_movement(delta):
 	var current_grid_pos = grid.get_grid_pos(position.x, position.z)
 	if global_position.y < grid.grid[current_grid_pos.x][current_grid_pos.y] * grid.cell_height + 1:
 		global_position.y = grid.grid[current_grid_pos.x][current_grid_pos.y] * grid.cell_height + 1
+	if global_position.y > grid.get_max_height() * grid.cell_height + 10:
+		global_position.y = grid.get_max_height() * grid.cell_height + 10
 
 	velocity.y = vertical_velocity
 	

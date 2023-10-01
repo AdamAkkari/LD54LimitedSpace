@@ -17,6 +17,12 @@ signal enemy_added
 @onready var wall_cell = load("res://Scenes/Prefabs/WallCell.tscn")
 @onready var building_cell = load("res://Scenes/Prefabs/BuildingCell.tscn")
 @onready var enemy_prefab = load("res://Scenes/Prefabs/enemy_character.tscn")
+@onready var kill_label = $CanvasLayer/Control/killLabel
+@onready var end_kill_label = $CanvasLayer/CenterContainer/endKillLabel
+@onready var end_height_label = $CanvasLayer/CenterContainer/endHeightLabel
+@onready var end_screen_timer = $endScreenTimer
+@onready var second_title_timer = $secondTitleTimer
+@onready var shot_sound = $shotSound
 
 var grid = []
 var ennemies = []
@@ -24,6 +30,8 @@ var pos_offset_x = 0.0
 var pos_offset_y = 0.0
 
 var difficulty = 0.0
+var kill_count = 0
+var game_end = false
 
 var rng = RandomNumberGenerator.new()
 
@@ -56,6 +64,8 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_cancel"):
 		is_paused = !is_paused
 	pauseCanvas.visible = is_paused
+	kill_label.visible = !is_paused and !game_end
+	kill_label.text = "Kills: " + str(kill_count)
 
 func increment_cell(x, y):
 	if x >= grid_size_x or x < 0:
@@ -104,14 +114,11 @@ func add_enemy(x, y):
 	ennemies.append(instance)
 	emit_signal("enemy_added", instance)
 
-# TODO: adapt for spawn management
-func _on_timer_timeout():
-	return
-
 func _on_enemy_killed(x, y, ennemy):
 	var grid_pos = get_grid_pos(x, y)
 	increment_cell(grid_pos.x, grid_pos.y)
 	ennemies.erase(ennemy)
+	kill_count += 1
 
 func get_player_grid_pos():
 	if player and !player.is_dead:
@@ -129,3 +136,19 @@ func get_max_height():
 			if grid[x][y] > max_height:
 				max_height = grid[x][y]
 	return max_height
+
+func _on_player_character_got_killed():
+	game_end = true
+	end_screen_timer.start()
+
+
+func _on_end_screen_timer_timeout():
+	shot_sound.play()
+	second_title_timer.start()
+	end_kill_label.text = "Kills: " + str(kill_count)
+	end_kill_label.visible = true
+
+func _on_second_title_timer_timeout():
+	shot_sound.play()
+	end_height_label.text = "Height: " + str(get_max_height())
+	end_height_label.visible = true

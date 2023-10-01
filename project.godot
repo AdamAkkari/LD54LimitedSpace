@@ -62,6 +62,10 @@ left_click={
 ]
 }
 
+[physics]
+
+3d/default_gravity=20.0
+
 [player]
 
 mouse_sensitivity=0.1
