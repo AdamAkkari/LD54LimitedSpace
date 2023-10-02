@@ -8,6 +8,7 @@ var finished_growing = false
 @onready var building_texture:Texture2D = load("res://Assets/Sprites/building_texture.png")
 
 var material:BaseMaterial3D = StandardMaterial3D.new()
+var material2:BaseMaterial3D = StandardMaterial3D.new()
 
 var rng = RandomNumberGenerator.new()
 
@@ -17,8 +18,10 @@ func _ready():
 	var green = rng.randf_range(0.4, 1.0)
 	var blue = rng.randf_range(0.1, 1.0)
 	material.albedo_texture = building_texture
+	material2.albedo_texture = building_texture
 	material.albedo_color = Color(1.0, green, blue)
 	mesh.set_surface_override_material(0, material)
+	mesh.set_surface_override_material(1, material2)
 
 func _process(delta):
 	if !finished_growing:
